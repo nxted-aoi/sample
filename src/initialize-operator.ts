@@ -9,7 +9,7 @@ import {
     createSolanaClient,
     createKeyPairFromBytes 
 } from "gill";
-import { getInitializeNcnInstruction } from "@jito-foundation/restaking-sdk";
+import { getInitializeNcnInstruction, getInitializeOperatorInstruction, InitializeOperatorInput } from "@jito-foundation/restaking-sdk";
 import { resolve } from "node:path";
 import { homedir } from "node:os";
 import { readFileSync } from "node:fs";
@@ -39,22 +39,23 @@ console.log("Base: ", baseKeypair.address);
 
 const addressEncoder = getAddressEncoder();
 
-const [ncnPubkey, bumpSeed] = await getProgramDerivedAddress({
+const [operatorPubkey, bumpSeed] = await getProgramDerivedAddress({
     programAddress: restakingProgramPubkey, 
     seeds: [
-        Buffer.from("ncn"),
+        Buffer.from("operator"),
         addressEncoder.encode(baseKeypair.address)
     ]
 });
 
-const input = {
+const input: InitializeOperatorInput = {
     config: configPubkey,
-    ncn: ncnPubkey,
+    operator: operatorPubkey,
     admin: adminKeypair,
     base: baseKeypair,
+    operatorFeeBps: 1000,
 };
 
-const instruction = getInitializeNcnInstruction(input);
+const instruction = getInitializeOperatorInstruction(input);
 
 const { value: latestBlockhash } = await rpc.getLatestBlockhash().send();
 
