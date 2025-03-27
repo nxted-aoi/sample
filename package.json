@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +13,9 @@
   "license": "ISC",
   "packageManager": "pnpm@10.7.0",
   "dependencies": {
-    "@jito-foundation/restaking-sdk": "^1.0.0"
+    "@jito-foundation/restaking-sdk": "^1.0.0",
+    "@solana-program/system": "^0.7.0",
+    "@solana/kit": "^2.1.0",
+    "gill": "^0.8.2"
   }
 }
