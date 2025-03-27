@@ -1,27 +1,15 @@
 import { 
-    address, 
-    createSolanaRpc, 
+    address,
     generateKeyPairSigner, 
     getProgramDerivedAddress, 
-    getAddressEncoder, 
-    createTransactionMessage, 
-    pipe, 
-    setTransactionMessageFeePayerSigner, 
-    appendTransactionMessageInstruction, 
-    setTransactionMessageLifetimeUsingBlockhash, 
-    signTransactionMessageWithSigners, 
+    getAddressEncoder,
     addSignersToTransactionMessage, 
     createTransaction, 
-    createSignerFromKeyPair, 
-    getSignatureFromTransaction, 
-    createSolanaClient, 
-    lamports,
-    airdropFactory, 
+    createSignerFromKeyPair,
+    createSolanaClient,
     createKeyPairFromBytes 
 } from "gill";
-import { fetchConfig  } from "@jito-foundation/restaking-sdk";
-import { getInitializeNcnInstruction, parseInitializeNcnInstruction } from "@jito-foundation/restaking-sdk";
-import { getSystemErrorMessage, getTransferSolInstruction, isSystemError } from '@solana-program/system';
+import { getInitializeNcnInstruction } from "@jito-foundation/restaking-sdk";
 import { resolve } from "node:path";
 import { homedir } from "node:os";
 import { readFileSync } from "node:fs";
@@ -31,7 +19,7 @@ const cluster = "devnet";
 const restakingProgramPubkey = address("RestkWeAVL8fRGgzhfeoqFhsqKRchg6aa1XrcH96z4Q");
 const configPubkey = address("4vvKh3Ws4vGzgXRVdo8SdL4jePXDvCqKVmi21BCBGwvn");
 
-const { rpc, sendAndConfirmTransaction, rpcSubscriptions } = createSolanaClient({
+const { rpc, sendAndConfirmTransaction } = createSolanaClient({
     urlOrMoniker: cluster,
 });
 
@@ -74,6 +62,7 @@ const transaction = createTransaction({
     feePayer: adminKeypair,
     instructions: [instruction],
     latestBlockhash,
+    version: "legacy"
 });
 const signedTransaction = addSignersToTransactionMessage([adminKeypair, baseKeypair], transaction);
 
